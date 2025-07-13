@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block main %}
+<div class="max-w-md mx-auto bg-white shadow rounded p-6 mt-6">
+  <h2 class="text-xl font-semibold mb-4">Add new course</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="space-y-4">
+      {{ form.as_p }}
+    </div>
+    <div class="mt-6 flex justify-end gap-4">
+      <a href="{% url 'course-list' %}" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancel</a>
+      <button type="submit" class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700">Save</button>
+    </div>
+  </form>
+</div>
+{% endblock %}
