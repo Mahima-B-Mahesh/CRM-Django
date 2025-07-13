@@ -1,0 +1,38 @@
+{% extends "base-popup.html" %}
+{% load static %}
+{% block content %}
+<div id="recordingModal">
+    <div class="flex flex-row justify-between items-center h-16 bg-gray-200 p-4">
+<h2 class="text-xl font-semibold mb-4 p-6">Add new recording</h2>
+<a href="{% url 'recordings' %}" onclick="closeModal()" aria-label="Close modal" class="mr-4">
+  &times;
+    </a>
+</div>
+<div class="bg-white rounded-xl w-full max-w-sm p-6 shadow-lg relative mx-8">
+<form id="recordingForm" method="post" action="{% url 'recording-add' %}" class="space-y-6">
+  {% csrf_token %}
+
+  <div class="space-y-4">
+    {{ form.youtube_url.label_tag }} {{ form.youtube_url }}
+    {{ form.title.label_tag }} {{ form.title }}
+    {{ form.description.label_tag }} {{ form.description }}
+  </div>
+
+  <div class="mt-4 flex justify-end gap-6">
+    <a href="{% url 'recordings' %}" onclick="closeModal()" class="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400">Cancel</a>
+    <button type="submit" class="px-5 py-3 font-medium leading-5 
+                          text-white transition-colors duration-150 bg-purple-600 border border-transparent
+                          rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none 
+                          focus:shadow-outline-purple">Save</button>
+  </div>
+</form>
+</div>
+</div>
+<script>
+    function closeModal() {
+  const modal = document.getElementById('recordingModal');
+  modal.classList.remove('flex');
+  modal.classList.add('hidden');
+}
+</script>
+{% endblock %}

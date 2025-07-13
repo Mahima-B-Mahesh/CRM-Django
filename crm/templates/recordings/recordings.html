@@ -1,1 +1,91 @@
-{%extends 'base.html'%} {%load check_roles%} {% block main%} {%endblock%}
+{% extends "base.html" %}
+{% load check_roles %}
+
+{% block main %}
+<div class="bg-white rounded-xl p-6 shadow-lg">
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-3xl font-bold mb-8">🎥 Recordings</h1>
+
+  {# ───── Add‑recording button (role‑based) ───── #}
+  {% check_user_role request "Admin,Academic Counsellor" as allow %}
+  {% if allow %}
+  <a href="{% url 'recording-add' %}?popup=1"
+     onclick="openModal()"
+     class="inline-flex items-center gap-2 mb-6 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">
+    <span class="text-xl">➕</span><span>Add recording</span>
+  </a>
+  {% endif %}
+</div>
+  {# ───── Grid of recordings ───── #}
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10 px-8">
+      {% for rec in recordings %}
+      <div class="bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden max-w-7xl mx-auto">
+
+        <div class="aspect-video">
+          <iframe class="w-full h-full"
+                  src="https://www.youtube.com/embed/{{ rec.youtube_url|cut:'https://www.youtube.com/watch?v=' }}"
+                  title="{{ rec.title|default:'Recording' }}"
+                  allowfullscreen></iframe>
+        </div>
+
+        <div class="p-4">
+          <h2 class="text-lg font-semibold text-purple-700 hover:underline mb-2">
+            <a href="{{ rec.youtube_url }}" target="_blank" rel="noopener">
+              {{ rec.title|default:'Untitled Recording'|truncatechars:60 }}
+            </a>
+          </h2>
+          {% if rec.description %}
+          <p class="text-sm text-gray-600">{{ rec.description }}</p>
+          {% endif %}
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-span-full flex flex-col items-center justify-center text-center py-16">
+        <p class="text-lg text-gray-600 mb-4">No recordings yet.</p>
+        {% if allow %}
+        <a href="{% url 'recording-add' %}" class="text-indigo-600 underline text-lg">Add one</a>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  {# ───── Pagination controls ───── #}
+  {% if page_obj.has_other_pages %}
+  <nav class="mt-10 flex justify-center items-center gap-2 select-none">
+
+    {# Prev #}
+    {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}"
+         class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">« Prev</a>
+    {% else %}
+      <span class="px-3 py-1 text-gray-400">« Prev</span>
+    {% endif %}
+
+    {# Page numbers (window ±2) #}
+    {% for num in page_obj.paginator.page_range %}
+      {% if num == page_obj.number %}
+        <span class="px-3 py-1 bg-purple-600 text-white rounded">{{ num }}</span>
+      {% elif num >= page_obj.number|add:'-2' and num <= page_obj.number|add:'2' %}
+        <a href="?page={{ num }}" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">{{ num }}</a>
+      {% elif num == 1 or num == page_obj.paginator.num_pages %}
+        <a href="?page={{ num }}" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">{{ num }}</a>
+      {% elif forloop.first or forloop.last %}
+        <span class="px-3 py-1">…</span>
+      {% endif %}
+    {% endfor %}
+
+    {# Next #}
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}"
+         class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Next »</a>
+    {% else %}
+      <span class="px-3 py-1 text-gray-400">Next »</span>
+    {% endif %}
+
+  </nav>
+  {% endif %}
+
+</div>
+{% endblock %}
