@@ -1,0 +1,37 @@
+<html lang="en">
+<head>
+ <style>
+    @media screen and (max-width: 480px){
+        .card{
+            max-width: 400px;
+            
+        }
+    }
+ </style>   
+</head>
+<body>
+    <div style="background-size:cover; height: 500px;">
+            <div class="card" style="width: 600px; margin: 0px auto; padding: 20px; background-color: white; border: 1px solid #e7e9eb; border-radius: 2%;">
+                <h4>Hi {{name}},</h4>
+
+                    <p>This is a friendly reminder that your payment of ₹{{ amount }} for the {{ batch.name }} batch is still pending.</p>
+
+                    <p>Please complete your payment at the earliest to avoid any disruption in your training sessions.</p>
+
+                    <p>If you’ve already made the payment, kindly ignore this message.</p>
+
+                    <p>For any assistance, feel free to contact us.</p>
+
+                    <p>Thank you,  
+                    Team CRM</p>
+
+                <p>Username:{{username}}</p>
+                <p>Password:{{password}}</p>
+
+                <h6>complete the payment before {{date_after_10_days}}</h6>
+                <p><a class="text-decoration-none" href="http://127.0.0.1:8000/">login now</a></p>
+              </div>
+       
+    </div>   
+</body>
+</html>
