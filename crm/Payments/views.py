@@ -68,7 +68,7 @@ class PaymentVerifyView(View):
         transaction_obj.rzp_payment_id = rzp_payment_id
         transaction_obj.rzp_signature = razorpay_signature
         client = razorpay.Client(
-            auth=("rzp_test_WxlwtarV5KteQU", "VgpYWbS08kBH3C7CYVypp1Sy")
+            auth=(config("RZP_CLIENT_ID"), config("RZP_CLIENT_SECRET"))
         )
         try:
             client.utility.verify_payment_signature({
