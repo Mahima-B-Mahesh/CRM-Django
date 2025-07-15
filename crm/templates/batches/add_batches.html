@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block main %}
+
+{% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+      <li class="{{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+<main class="h-full pb-16 overflow-y-auto">
+  <form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="container px-6 mx-auto grid">
+      <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">Register</h2>
+
+      <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+
+        {% for field in form %}
+          <label class="block text-sm mt-4">
+            <span class="text-gray-700 dark:text-gray-400">{{ field.label }}</span>
+            {{ field }}
+            <div class="text-red-500 text-xs mt-1">{{ field.errors }}</div>
+          </label>
+        {% endfor %}
+
+        <div class="flex items-center justify-end">
+            <a class="p-4" href="{% url 'batches_list' %}">Cancel</a>
+          <button type="submit"
+            class="px-5 py-3 my-6 font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+            Register
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</main>
+
+{% endblock %}

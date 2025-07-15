@@ -26,6 +26,18 @@ class Batches(BaseClass):
         on_delete=models.SET_NULL,
         null=True,
     )
+    
+    trainer = models.ForeignKey(
+        "trainers.Trainers",
+        on_delete=models.SET_NULL,
+        null=True,
+    )
+    
+    courses = models.ForeignKey(
+        "courses.Courses",
+        on_delete=models.SET_NULL,
+        null=True,
+    )
 
     def __str__(self):
 
